@@ -1,0 +1,26 @@
+{
+  "name": "ai-dev-team",
+  "version": "0.1.0",
+  "description": "Local modular workflow runtime for coordinating LLM-based software-development roles",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.4.1",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {},
+  "keywords": [
+    "ai",
+    "workflow",
+    "llm",
+    "runtime"
+  ],
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@biomejs/biome": "2.5.13",
+    "@types/node": "26.5.1",
+    "@vitest/coverage-v8": "5.0.0",
+    "typescript": "7.0.2",
+    "vitest": "5.0.0"
+  }
+}
