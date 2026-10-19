@@ -37,13 +37,13 @@ Implement the smallest solution that correctly solves the current problem.
 
 Do not:
 
-* add features that were not requested
-* introduce abstractions without a concrete need
-* add configuration "for future flexibility"
-* build infrastructure before it is needed
-* introduce a database when filesystem storage is sufficient
-* introduce frameworks or libraries without a clear benefit
-* optimize prematurely
+- add features that were not requested
+- introduce abstractions without a concrete need
+- add configuration "for future flexibility"
+- build infrastructure before it is needed
+- introduce a database when filesystem storage is sufficient
+- introduce frameworks or libraries without a clear benefit
+- optimize prematurely
 
 Prefer straightforward code over clever code.
 
@@ -59,11 +59,11 @@ Change only what is necessary for the task.
 
 Do not:
 
-* rewrite unrelated code
-* rename things without a reason
-* reorganize unrelated files
-* remove existing behavior without understanding why it exists
-* modify public interfaces unnecessarily
+- rewrite unrelated code
+- rename things without a reason
+- reorganize unrelated files
+- remove existing behavior without understanding why it exists
+- modify public interfaces unnecessarily
 
 Preserve existing behavior unless the task explicitly requires changing it.
 
@@ -76,7 +76,7 @@ Never assume that code works because it looks correct.
 After implementation:
 
 1. Run the relevant tests.
-2. Run type checking/build if applicable.
+2. Run type checking/build if applicable (always run `pnpm typecheck` before marking tasks as completed).
 3. Run relevant linting if applicable.
 4. Inspect the resulting changes.
 5. Fix failures before considering the task complete.
@@ -91,15 +91,15 @@ A task is not complete until its acceptance criteria are satisfied.
 
 Keep these boundaries intact:
 
-* Work Item = what needs to be done.
-* Workflow = who participates and in what order.
-* Execution Plan = resolved workflow for a specific Work Item.
-* Role = configurable participant instructions and configuration.
-* Permissions = runtime-enforced capabilities.
-* Runtime = orchestrates execution and executes tools.
-* Artifacts = explicit communication between role executions.
-* Target Project = software being modified.
-* Filesystem = source of truth for the MVP.
+- Work Item = what needs to be done.
+- Workflow = who participates and in what order.
+- Execution Plan = resolved workflow for a specific Work Item.
+- Role = configurable participant instructions and configuration.
+- Permissions = runtime-enforced capabilities.
+- Runtime = orchestrates execution and executes tools.
+- Artifacts = explicit communication between role executions.
+- Target Project = software being modified.
+- Filesystem = source of truth for the MVP.
 
 Do not move responsibilities between these boundaries without a concrete architectural reason.
 
@@ -125,9 +125,9 @@ Every tool call must go through runtime permission checks.
 
 Permissions may restrict:
 
-* tools
-* filesystem paths
-* operations
+- tools
+- filesystem paths
+- operations
 
 A role must never gain additional capabilities merely because its instructions request them.
 
@@ -167,9 +167,9 @@ Work only on the current task unless a dependency makes another change necessary
 
 If you discover unrelated problems:
 
-* do not fix them automatically
-* mention them to the user
-* continue only if they block the current task
+- do not fix them automatically
+- mention them to the user
+- continue only if they block the current task
 
 Update `backlog.md` when you identify useful future work.
 
@@ -185,11 +185,11 @@ Do not create documentation that merely repeats the code.
 
 Documentation should explain:
 
-* why something exists
-* important boundaries
-* contracts
-* invariants
-* decisions that are not obvious from the code
+- why something exists
+- important boundaries
+- contracts
+- invariants
+- decisions that are not obvious from the code
 
 Keep documentation concise and current.
 
@@ -208,3 +208,12 @@ Prefer this order:
 Never invent requirements, APIs, architecture, or behavior to make progress appear smoother.
 
 A short clarification is better than implementing the wrong thing.
+
+## TDD by Default (Test-Driven Development)
+
+When implementing features or bug fixes, you MUST follow the Test-Driven Development cycle:
+
+1. **Write tests first**: Create or update unit/integration tests covering the required changes before writing any implementation code.
+2. **Verify test failure**: Run the test suite to ensure the new tests fail correctly.
+3. **Implement**: Write the minimum production code required to pass the tests.
+4. **Verify success**: Run all tests to confirm they pass successfully before marking the task complete.

@@ -7,11 +7,9 @@
 - [x] Configure TypeScript
 - [x] Configure linting / formatting
 - [x] Configure test runner
-- [ ] Specify the enum of result statuses and adjust SPEC.md
-- [ ] Create basic `src/` structure
-- [ ] Create basic `tests/` structure
-- [ ] Add development scripts to `package.json`
-- [ ] Verify project builds and tests run
+- [x] Create basic `src/` structure
+- [x] Add development scripts to `package.json`
+- [x] Verify project builds and tests run
 
 ### Documentation
 
@@ -26,7 +24,7 @@
 - [x] Create `docs/storage.md`
 - [x] Create `docs/execution.md`
 - [x] Create `docs/development.md`
-- [ ] Review documentation against `SPEC.md`
+- [x] Review documentation against `SPEC.md`
 
 ---
 
@@ -34,15 +32,15 @@
 
 Implement filesystem as the source of truth for the MVP.
 
-- [ ] Define project directory structure
-- [ ] Implement filesystem abstraction
-- [ ] Implement directory creation
-- [ ] Implement file creation
-- [ ] Implement file reading
-- [ ] Implement file writing
-- [ ] Implement JSON read/write helpers
-- [ ] Implement append-only JSONL event writing
-- [ ] Add filesystem unit tests
+- [x] Define project directory structure
+- [x] Implement filesystem abstraction
+- [x] Implement directory creation
+- [x] Implement file creation
+- [x] Implement file reading
+- [x] Implement file writing
+- [x] Implement JSON read/write helpers
+- [x] Implement append-only JSONL event writing
+- [x] Add filesystem unit tests
 
 Expected structure:
 
@@ -65,15 +63,15 @@ Implement:
 pnpm exec create-project <name>
 ```
 
-- [ ] Create project directory
-- [ ] Create `project.md`
-- [ ] Create project `backlog.md`
-- [ ] Create `features/`
-- [ ] Create `bugs/`
-- [ ] Validate project name
-- [ ] Prevent accidental overwrite of existing project
-- [ ] Add tests
-- [ ] Verify generated structure
+- [x] Create project directory
+- [x] Create `project.md`
+- [x] Create project `backlog.md`
+- [x] Create `features/`
+- [x] Create `bugs/`
+- [x] Validate project name
+- [x] Prevent accidental overwrite of existing project
+- [x] Add tests
+- [x] Verify generated structure
 
 ---
 
@@ -81,21 +79,21 @@ pnpm exec create-project <name>
 
 Implement the Work Item model.
 
-- [ ] Define Work Item structure
-- [ ] Support `feature`
-- [ ] Support `bug`
-- [ ] Define work item IDs
-- [ ] Define MVP work-item outcome status enum: `passed | failed | cancelled | human_required`
-- [ ] Define common metadata
+- [x] Add tests
+- [x] Define Work Item structure
+- [x] Support `feature`
+- [x] Support `bug`
+- [x] Define work item IDs
+- [x] Define MVP work-item outcome status enum: `passed | failed | cancelled | human_required`
+- [x] Define common metadata
 
 The persisted outcome status is unset while a work item is active. `passed` means QA passed and the item is PR-ready; `failed` means an unrecoverable role, tool, or runtime failure; `cancelled` means execution was stopped or the target application/process crashed; and `human_required` means the third Developer attempt failed QA. QA results use the separate `status: passed | failed` schema.
 
-- [ ] Define feature-specific fields
-- [ ] Define bug provenance (`source.feature`, etc.)
-- [ ] Implement Work Item filesystem storage
-- [ ] Implement Work Item loading
-- [ ] Implement Work Item validation
-- [ ] Add tests
+- [x] Define feature-specific fields
+- [x] Define bug provenance (`source.feature`, etc.)
+- [x] Implement Work Item filesystem storage
+- [x] Implement Work Item loading
+- [x] Implement Work Item validation
 
 Target structure:
 
@@ -115,22 +113,16 @@ projects/<project>/
 
 Implement:
 
-```bash
-pnpm exec new-request <target_project> "<request>"
-```
+- [x] Create a Feature from a user request
+- [x] Generate Feature ID
+- [x] Create feature directory
+- [x] Create `feature.md`
+- [x] Create feature runtime directory
+- [x] Add feature to project backlog
+- [x] Add tests
 
-- [ ] Create a Feature from a user request
-- [ ] Generate Feature ID
-- [ ] Create feature directory
-- [ ] Create `feature.md`
-- [ ] Create feature runtime directory
-- [ ] Add feature to project backlog
-- [ ] Add tests
-
-Example:
-
-```bash
-pnpm exec new-request demo-app "Create a Save button"
+```typescript
+WorkItemService.createFeature("Create a Save button");
 ```
 
 Result:

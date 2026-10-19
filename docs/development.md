@@ -25,7 +25,7 @@ From the current project setup:
 | Tests           | Vitest (with coverage package available)                            |
 | Lint / format   | Biome                                                               |
 
-`package.json` scripts and a populated `src/` / `tests/` tree are still backlog items. Until scripts exist, run tools via `pnpm exec` (for example `pnpm exec tsc`, `pnpm exec vitest`, `pnpm exec biome`) as appropriate.
+`package.json` scripts and a populated `src/` tree are still backlog items. Until scripts exist, run tools via `pnpm exec` (for example `pnpm exec tsc`, `pnpm exec vitest`, `pnpm exec biome`) as appropriate.
 
 Expected compile layout once sources exist:
 
@@ -103,6 +103,8 @@ Prefer deterministic tests: mock the LLM provider for orchestration, permissions
 ---
 
 ## Implementation sequencing (MVP)
+
+- **TDD Workflow**: All code contributions must adhere to Test-Driven Development (write tests -> verify failure -> implement -> verify success).
 
 The backlog’s order is deliberate. In particular:
 
