@@ -5,7 +5,8 @@
 //
 //   - Top-level mappings `key: value`
 //   - Nested mappings via indentation
-//   - Block sequences (`key:` followed by indented `- item` lines)
+//   - Block sequences of scalars (`key:` followed by indented `- item` lines)
+//   - Block sequences of mappings (`- key: value` with continuation lines)
 //   - Inline sequences (`key: [a, b, c]`)
 //   - Scalar types: null, string (quoted/unquoted), number, boolean
 //   - Comments (`#`)
@@ -102,9 +103,7 @@ class YamlParser {
 
     while (this.peek() && this.peek()!.indent === indent && this.isSequenceEntry(this.peek()!)) {
       const line = this.next()!;
-      const itemContent = line.content.startsWith("- ")
-        ? line.content.slice(2).trim()
-        : "";
+      const itemContent = line.content.startsWith("- ") ? line.content.slice(2).trim() : "";
 
       if (itemContent === "") {
         const next = this.peek();
@@ -113,6 +112,8 @@ class YamlParser {
         } else {
           result.push(null);
         }
+      } else if (this.isMappingContent(itemContent)) {
+        result.push(this.parseSequenceItemMapping(itemContent, indent));
       } else {
         result.push(this.parseInlineValue(itemContent));
       }
@@ -123,6 +124,66 @@ class YamlParser {
 
   private isSequenceEntry(line: ParsedLine): boolean {
     return line.content.startsWith("- ") || line.content === "-";
+  }
+
+  /**
+   * Check if content looks like a YAML key-value pair (contains a
+   * colon separator with a non-empty key before it).
+   */
+  private isMappingContent(content: string): boolean {
+    const colonIdx = content.indexOf(":");
+    if (colonIdx === -1) {
+      return false;
+    }
+    const key = content.slice(0, colonIdx).trim();
+    return key.length > 0;
+  }
+
+  /**
+   * Parse a sequence item that starts with a key-value pair on the
+   * same line as `- ` (e.g., `- from: qa` followed by `on: failed`
+   * at the same content indent). The mapping entries at
+   * `seqIndent + 2` are parsed as part of this item.
+   */
+  private parseSequenceItemMapping(content: string, seqIndent: number): Record<string, unknown> {
+    const itemIndent = seqIndent + 2;
+    const result: Record<string, unknown> = {};
+
+    // Parse the first key-value pair from the content after `- `.
+    const [key, value] = this.splitKeyValue(content);
+    if (value !== undefined) {
+      result[key] = this.parseInlineValue(value);
+    } else {
+      // key: with no inline value — look for a nested block.
+      const next = this.peek();
+      if (next && next.indent > itemIndent) {
+        result[key] = this.parseBlock(next.indent);
+      } else {
+        result[key] = null;
+      }
+    }
+
+    // Parse subsequent mapping entries at the same content indent.
+    while (
+      this.peek() &&
+      this.peek()!.indent === itemIndent &&
+      !this.isSequenceEntry(this.peek()!)
+    ) {
+      const line = this.next()!;
+      const [k, v] = this.splitKeyValue(line.content);
+      if (v !== undefined) {
+        result[k] = this.parseInlineValue(v);
+      } else {
+        const next = this.peek();
+        if (next && next.indent > itemIndent) {
+          result[k] = this.parseBlock(next.indent);
+        } else {
+          result[k] = null;
+        }
+      }
+    }
+
+    return result;
   }
 
   private splitKeyValue(content: string): [string, string | undefined] {
@@ -255,9 +316,7 @@ export function serializeYaml(
  * Parse a markdown file with YAML frontmatter.
  * Returns the parsed metadata object and the markdown body.
  */
-export function parseFrontmatter(
-  content: string,
-): { data: Record<string, unknown>; body: string } {
+export function parseFrontmatter(content: string): { data: Record<string, unknown>; body: string } {
   const lines = content.split("\n");
 
   // Files without a leading --- delimiter have no frontmatter.
@@ -280,16 +339,16 @@ export function parseFrontmatter(
   }
 
   const yamlText = lines.slice(1, closingIdx).join("\n");
-  const body = lines.slice(closingIdx + 1).join("\n").replace(/^\n+/, "");
+  const body = lines
+    .slice(closingIdx + 1)
+    .join("\n")
+    .replace(/^\n+/, "");
 
   return { data: parseYaml(yamlText), body };
 }
 
 /** Serialize metadata + markdown body into a markdown file with YAML frontmatter. */
-export function serializeFrontmatter(
-  data: Record<string, unknown>,
-  body: string,
-): string {
+export function serializeFrontmatter(data: Record<string, unknown>, body: string): string {
   const lines: string[] = [];
   lines.push("---");
   serializeYaml(data, 0, lines);

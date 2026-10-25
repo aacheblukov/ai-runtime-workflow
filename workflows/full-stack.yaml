@@ -1,0 +1,8 @@
+name: full-stack
+version: 1
+steps:
+  - product-owner
+  - designer
+  - backend-developer
+  - developer
+  - qa

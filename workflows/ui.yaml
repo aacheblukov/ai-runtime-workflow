@@ -1,0 +1,7 @@
+name: ui
+version: 1
+steps:
+  - product-owner
+  - designer
+  - developer
+  - qa

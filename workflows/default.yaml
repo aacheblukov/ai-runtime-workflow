@@ -1,0 +1,6 @@
+name: default
+version: 1
+steps:
+  - product-owner
+  - developer
+  - qa

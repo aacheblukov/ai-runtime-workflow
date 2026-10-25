@@ -150,6 +150,7 @@ workflows/
 └── full-stack.yaml
 ```
 
+- [x] Add tests
 - [ ] Define workflow template schema
 - [ ] Implement workflow loader
 - [ ] Validate workflow templates
@@ -158,7 +159,6 @@ workflows/
 - [ ] Add default workflow
 - [ ] Add UI workflow
 - [ ] Add full-stack workflow
-- [ ] Add tests
 - [ ] Define optional workflow behavior
 - [ ] Define retry behavior
 - [ ] Define transitions
